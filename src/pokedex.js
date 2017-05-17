@@ -5,7 +5,7 @@ import axios from 'axios';
 class Pokedex extends Component {
   constructor(props) {
     super(props);
-    this.state = { apiData: [] };
+    this.state = { apiData: [], name: "", weight: "" };
   }
 
   componentDidMount() {
@@ -17,19 +17,28 @@ class Pokedex extends Component {
   createPokemonList() {
     this.indents = [];
 
-    for (var i = 0; i < this.state.apiData.length; i++) {      
+    for (var i = 0; i < this.state.apiData.length; i++) {
       this.name = this.state.apiData[i].name;
       this.final = this.createNumber(i + 1) + this.capitalizeWord(this.name);
-      this.indents.push(<p key={i + 1} className="monEntry">{this.final}</p>);
+
+      this.indents.push(<p onClick={() => this.getPokemonEntry()} key={i + 1} className="monEntry">{this.final}</p>);
     }
 
     return this.indents;
   }
 
   getPokemonEntry() {
+    let num = 1;
 
+     axios.get("http://pokeapi.co/api/v2/pokemon/"+ num).then((allData) => {
+       console.log(allData.data);
+     });
+
+    this.setState({ 
+      name: this.state.apiData[0].name, 
+      weight: "Man!" });
   }
-
+  
   render() {
     return (
       <div>
@@ -39,8 +48,8 @@ class Pokedex extends Component {
         </div>
 
         <div className="columns monProfile">
-          <p className="monEntry">Name: </p>
-          <p className="monEntry">Weight: </p>
+          <p className="monEntry">Name: {this.state.name}</p>
+          <p className="monEntry">Weight: {this.state.weight}</p>
           <p className="monEntry">Abilities: </p>
         </div>
       </div>
