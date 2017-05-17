@@ -1,0 +1,37 @@
+* {
+    margin: 0 auto;
+    padding: 0;
+    font-family: 'Signika', sans-serif;
+    text-align: center;
+}
+
+.title {
+    font-size: 100px;
+}
+
+.columns {
+    margin: 10px 10px;
+    width: 20%;
+    height: 400px;
+    display: inline-block;
+    vertical-align: top;
+    overflow: auto;
+}
+
+.monList {
+    min-width: 150px;
+    max-width: 200px;
+    background-color: cornsilk;
+    margin-right: 60px;
+}
+
+.monEntry {
+    text-align: left;
+    text-indent: 15px;
+}
+
+.monProfile {
+    min-width: 500px;
+    background-color: cornsilk;
+    margin-left: 60px;
+}
