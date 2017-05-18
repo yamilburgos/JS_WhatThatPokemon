@@ -5,21 +5,22 @@ import axios from 'axios';
 class Pokedex extends Component {
   constructor(props) {
     super(props);
-
-    this.state = { 
-      apiData: [], 
-      entry: "",
-      weight: "",
-      type: "",
-      ability: "",
-      moves : []
-    };
+    this.state = { apiData: [], current: [], };
   }
 
   componentDidMount() {
     axios.get("http://pokeapi.co/api/v2/pokemon/?limit=151").then((allData) => {
+        console.log(allData.data);
         this.setState({ apiData: allData.data.results });
      });
+  }
+
+  getPokemonEntry() {
+    let num = 14 + 1;
+
+    axios.get(this.state.apiData[num].url).then((allData) => {        
+        this.setState({ current: allData.data });
+    });
   }
 
   createPokemonList() {
@@ -34,18 +35,19 @@ class Pokedex extends Component {
     return this.indents;
   }
 
-  getPokemonEntry() {
-    let num = 14 + 1;
+  createPokemonProfile() {
+    console.log(this.createNumber(this.state.current.id), (this.state.current));
+    this.indents = [];
 
-    axios.get(this.state.apiData[num].url).then((allData) => {        
-        this.setState({ 
-          entry: this.createNumber(allData.data.id) + this.capitalize(allData.data.name), 
-          type: "Type(s): " + this.checkType(allData.data, allData.data.types.length),
-          ability: "Abilties: " + this.checkAbility(allData.data, allData.data.abilities.length),
-          moves: "All Moves: " + this.checkMoves(allData.data, allData.data.moves.length),
-          weight: "Weight: " + allData.data.weight
-        });
-    });
+    if(this.state.current.id !== undefined) {
+      this.indents.push(<p key="a" className="monEntry">{this.createNumber(this.state.current.id) + this.capitalize(this.state.current.name)}</p>);
+      this.indents.push(<p key="b" className="monEntry">Weight: {this.state.current.weight}</p>);
+      this.indents.push(<p key="c" className="monEntry">Type(s): {this.checkData("Type", this.state.current, this.state.current.types.length)}</p>);
+      this.indents.push(<p key="d" className="monEntry">Abilities: {this.checkData("Ability", this.state.current, this.state.current.abilities.length)}</p>);
+      this.indents.push(<p key="e" className="monEntry">All Moves: {this.checkData("Moves", this.state.current, this.state.current.moves.length)}</p>);
+    }
+  
+    return this.indents;
   }
   
   render() {
@@ -57,11 +59,7 @@ class Pokedex extends Component {
         </div>
 
         <div className="columns monProfile">
-          <p className="monEntry">{this.state.entry}</p>
-          <p className="monEntry">{this.state.weight}</p>
-          <p className="monEntry">{this.state.type}</p>
-          <p className="monEntry">{this.state.ability}</p>
-          <p className="monEntry">{this.state.moves}</p>
+          {this.createPokemonProfile()}
         </div>
       </div>
     );
@@ -81,37 +79,26 @@ class Pokedex extends Component {
     return thisName.charAt(0).toUpperCase() + thisName.slice(1);
   }
 
-  checkType(typeData, dataLength) {
+  checkData(path, typeData, dataLength) {
     var fullString = '';
-    
+
     for (var i = 0; i < dataLength; i++) {
       var sep = (i + 1 < dataLength) ? " / " : "";
-      fullString += this.capitalize(typeData.types[i].type.name) + sep;
+      fullString += this.pickPath(path, typeData, i, sep);
     }
 
     return fullString;
   }
 
-  checkAbility(typeData, dataLength) {
-    var fullString = '';
-
-    for (var i = 0; i < dataLength; i++) {
-      var sep = (i + 1 < dataLength) ? " / " : "";
-      fullString += this.capitalize(typeData.abilities[i].ability.name) + sep;
+  pickPath(chosenPathway, apiInfo, i, sep) {
+    switch(chosenPathway) {
+        case "Type":
+          return this.capitalize(apiInfo.types[i].type.name) + sep;
+        case "Ability":
+          return this.capitalize(apiInfo.abilities[i].ability.name) + sep;
+        default: // Moves
+          return this.capitalize(apiInfo.moves[i].move.name) + sep;
     }
-
-    return fullString;
-  }
-
-  checkMoves(typeData, dataLength) {
-    var fullString = '';
-
-    for (var i = 0; i < dataLength; i++) {
-      var sep = (i + 1 < dataLength) ? " / " : "";
-      fullString += this.capitalize(typeData.moves[i].move.name) + sep;
-    }
-
-    return fullString;
   }
 }
 
