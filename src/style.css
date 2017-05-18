@@ -47,6 +47,17 @@
     margin: 10px;
 }
 
-li {
+.pokeImage {
+    height: 100px;
+    width: 100px;
+    margin-bottom: -5px;
+}
+
+.moveBullet {
     box-sizing: border-box;
+}
+
+.nameBullet:hover {
+    background-color: red;
+    color: white;
 }

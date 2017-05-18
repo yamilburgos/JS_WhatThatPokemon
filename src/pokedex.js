@@ -26,7 +26,7 @@ class Pokedex extends Component {
     });
 
     return this.results = this.indents.map((data, num) => {
-        return (<p onClick={() => this.getPokemonEntry(num)} key={num + 1} className="monEntry">{data}</p>);
+        return (<p onClick={() => this.getPokemonEntry(num)} key={num + 1} className="monEntry nameBullet">{data}</p>);
     });
   }
 
@@ -34,8 +34,11 @@ class Pokedex extends Component {
     this.indents = [];
 
     if(this.state.current.id !== undefined) {
+      this.indents.push(<img key="i1" className="pokeImage" src={this.state.current.sprites.front_default} alt=""></img>);
+      this.indents.push(<img key="i2" className="pokeImage" src={this.state.current.sprites.front_shiny} alt=""></img>);
+     
       this.indents.push(<h3 key="a" className="monEntry focus">{this.createNumber(this.state.current.id) + this.capitalize(this.state.current.name)}</h3>);
-      this.indents.push(<p key="b" className="monEntry">Weight: {this.state.current.weight}</p>);
+      this.indents.push(<p key="b" className="monEntry">Weight: {this.state.current.weight / 10} kg</p>);
       this.indents.push(<p key="c" className="monEntry">Type(s): {this.checkData("Type", this.state.current.types.length)}</p>);
       this.indents.push(<p key="d" className="monEntry">Abilities: {this.checkData("Ability", this.state.current.abilities.length)}</p>);
     }
@@ -48,7 +51,7 @@ class Pokedex extends Component {
         this.indents.push(<h3 key="e" className="monEntry focus">Move List:</h3>);
 
         return this.indents = this.state.current.moves.map((data, num) => {
-          return (<li key={num + 1} className="monEntry"> {this.checkMoves("Moves", this.state.current.moves.length, num)}</li>);
+          return (<li key={num + 1} className="monEntry moveBullet"> {this.checkMoves("Moves", this.state.current.moves.length, num)}</li>);
         });
     }
   }
@@ -97,7 +100,7 @@ class Pokedex extends Component {
   render() {
     return (
       <div>
-        <h1 className="title">Who's that Pokémon?</h1>
+        <h1 className="title">What's that Pokémon?</h1>
         <div className="columns monList">
           {this.createPokemonList()}
         </div>
