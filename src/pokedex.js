@@ -21,15 +21,13 @@ class Pokedex extends Component {
   }
 
   createPokemonList() {
-    this.indents = [];
+    this.indents = this.state.apiData.map((data, num) => {
+        return this.createNumber(num + 1) + this.capitalize(data.name);
+    });
 
-    for (let i = 0; i < this.state.apiData.length; i++) {
-      this.final = this.createNumber(i + 1) +  this.capitalize(this.state.apiData[i].name);
-     
-      this.indents.push(<p onClick={() => this.getPokemonEntry(i)} key={i + 1} className="monEntry">{this.final}</p>);
-    }
-
-    return this.indents;
+    return this.results = this.indents.map((data, num) => {
+        return (<p onClick={() => this.getPokemonEntry(num)} key={num + 1} className="monEntry">{data}</p>);
+    });
   }
 
   createPokemonProfile() {
