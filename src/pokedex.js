@@ -34,7 +34,7 @@ class Pokedex extends Component {
     this.indents = [];
 
     if(this.state.current.id !== undefined) {
-      this.indents.push(<p key="a" className="monEntry">{this.createNumber(this.state.current.id) + this.capitalize(this.state.current.name)}</p>);
+      this.indents.push(<h3 key="a" className="monEntry focus">{this.createNumber(this.state.current.id) + this.capitalize(this.state.current.name)}</h3>);
       this.indents.push(<p key="b" className="monEntry">Weight: {this.state.current.weight}</p>);
       this.indents.push(<p key="c" className="monEntry">Type(s): {this.checkData("Type", this.state.current.types.length)}</p>);
       this.indents.push(<p key="d" className="monEntry">Abilities: {this.checkData("Ability", this.state.current.abilities.length)}</p>);
@@ -45,7 +45,7 @@ class Pokedex extends Component {
 
   createPokemonMoveSet() {
     if(this.state.current.id !== undefined) {
-        this.indents.push(<h3 key="e" className="monEntry">Move List:</h3>);
+        this.indents.push(<h3 key="e" className="monEntry focus">Move List:</h3>);
 
         return this.indents = this.state.current.moves.map((data, num) => {
           return (<li key={num + 1} className="monEntry"> {this.checkMoves("Moves", this.state.current.moves.length, num)}</li>);
@@ -103,7 +103,9 @@ class Pokedex extends Component {
         </div>
         <div className="columns monProfile">
           {this.createPokemonProfile()}
-          {this.createPokemonMoveSet()}
+          <div className="moveList">
+            {this.createPokemonMoveSet()}
+          </div>
         </div>
       </div>
     );

@@ -36,7 +36,17 @@
     margin-left: 60px;
 }
 
+.moveList {
+    list-style-type: none;
+    column-count: 3;
+}
+
+.focus {
+    text-align: center;
+    font-size: 24px;
+    margin: 10px;
+}
+
 li {
-    column-count: 2;
-    list-style: none;
+    box-sizing: border-box;
 }
