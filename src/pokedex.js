@@ -20,7 +20,7 @@ class Pokedex extends Component {
     });
   }
 
-  createPokemonList() {
+  makePokemonList() {
     this.indents = this.state.apiData.map((data, num) => {
         return this.createNumber(num + 1) + this.capitalize(data.name);
     });
@@ -30,13 +30,21 @@ class Pokedex extends Component {
     });
   }
 
-  createPokemonProfile() {
+    createPokemonImages() {
     this.indents = [];
 
     if(this.state.current.id !== undefined) {
       this.indents.push(<img key="i1" className="pokeImage" src={this.state.current.sprites.front_default} alt=""></img>);
       this.indents.push(<img key="i2" className="pokeImage" src={this.state.current.sprites.front_shiny} alt=""></img>);
-     
+    }
+  
+    return this.indents;
+  }
+
+  createPokemonProfile() {
+    this.indents = [];
+
+    if(this.state.current.id !== undefined) {
       this.indents.push(<h3 key="a" className="monEntry focus">{this.createNumber(this.state.current.id) + this.capitalize(this.state.current.name)}</h3>);
       this.indents.push(<p key="b" className="monEntry">Weight: {this.state.current.weight / 10} kg</p>);
       this.indents.push(<p key="c" className="monEntry">Type(s): {this.checkData("Type", this.state.current.types.length)}</p>);
@@ -102,9 +110,10 @@ class Pokedex extends Component {
       <div>
         <h1 className="title">What's that Pokémon?</h1>
         <div className="columns monList">
-          {this.createPokemonList()}
+          {this.makePokemonList()}
         </div>
         <div className="columns monProfile">
+          {this.createPokemonImages()}
           {this.createPokemonProfile()}
           <div className="moveList">
             {this.createPokemonMoveSet()}
