@@ -8,10 +8,11 @@ class Pokedex extends Component {
 
     this.state = { 
       apiData: [], 
-      entry: "", 
-      weight: "", 
+      entry: "",
+      weight: "",
       type: "",
-      ability: ""
+      ability: "",
+      moves : []
     };
   }
 
@@ -34,15 +35,14 @@ class Pokedex extends Component {
   }
 
   getPokemonEntry() {
-    let num = 0;
+    let num = 14 + 1;
 
-    axios.get(this.state.apiData[num].url).then((allData) => {
-        console.log(allData.data, allData.data.types[0].type.name);
-        
+    axios.get(this.state.apiData[num].url).then((allData) => {        
         this.setState({ 
           entry: this.createNumber(allData.data.id) + this.capitalize(allData.data.name), 
           type: "Type(s): " + this.checkType(allData.data, allData.data.types.length),
-          ability: "Abilties: " + this.checkAbility(allData.data, 3),
+          ability: "Abilties: " + this.checkAbility(allData.data, allData.data.abilities.length),
+          moves: "All Moves: " + this.checkMoves(allData.data, allData.data.moves.length),
           weight: "Weight: " + allData.data.weight
         });
     });
@@ -58,9 +58,10 @@ class Pokedex extends Component {
 
         <div className="columns monProfile">
           <p className="monEntry">{this.state.entry}</p>
-          <p className="monEntry">{this.state.type}</p>
           <p className="monEntry">{this.state.weight}</p>
+          <p className="monEntry">{this.state.type}</p>
           <p className="monEntry">{this.state.ability}</p>
+          <p className="monEntry">{this.state.moves}</p>
         </div>
       </div>
     );
@@ -93,10 +94,21 @@ class Pokedex extends Component {
 
   checkAbility(typeData, dataLength) {
     var fullString = '';
-    
+
     for (var i = 0; i < dataLength; i++) {
       var sep = (i + 1 < dataLength) ? " / " : "";
-    //  fullString += this.capitalize(typeData.types[i].type.name) + sep;
+      fullString += this.capitalize(typeData.abilities[i].ability.name) + sep;
+    }
+
+    return fullString;
+  }
+
+  checkMoves(typeData, dataLength) {
+    var fullString = '';
+
+    for (var i = 0; i < dataLength; i++) {
+      var sep = (i + 1 < dataLength) ? " / " : "";
+      fullString += this.capitalize(typeData.moves[i].move.name) + sep;
     }
 
     return fullString;
