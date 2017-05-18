@@ -14,9 +14,7 @@ class Pokedex extends Component {
      });
   }
 
-  getPokemonEntry() {
-    let num = 14 + 1;
-
+  getPokemonEntry(num) {
     axios.get(this.state.apiData[num].url).then((allData) => {        
         this.setState({ current: allData.data });
     });
@@ -25,9 +23,10 @@ class Pokedex extends Component {
   createPokemonList() {
     this.indents = [];
 
-    for (var i = 0; i < this.state.apiData.length; i++) {
+    for (let i = 0; i < this.state.apiData.length; i++) {
       this.final = this.createNumber(i + 1) +  this.capitalize(this.state.apiData[i].name);
-      this.indents.push(<p onClick={() => this.getPokemonEntry()} key={i + 1} className="monEntry">{this.final}</p>);
+     
+      this.indents.push(<p onClick={() => this.getPokemonEntry(i)} key={i + 1} className="monEntry">{this.final}</p>);
     }
 
     return this.indents;
@@ -41,8 +40,18 @@ class Pokedex extends Component {
       this.indents.push(<p key="b" className="monEntry">Weight: {this.state.current.weight}</p>);
       this.indents.push(<p key="c" className="monEntry">Type(s): {this.checkData("Type", this.state.current.types.length)}</p>);
       this.indents.push(<p key="d" className="monEntry">Abilities: {this.checkData("Ability", this.state.current.abilities.length)}</p>);
+    }
+  
+    return this.indents;
+  }
 
-      for (var i = 0; i < this.state.current.moves.length; i++) { // Moves
+  createPokemonMoveSet() {
+    this.indents = [];
+
+    if(this.state.current.id !== undefined) {
+      this.indents.push(<h3 key="e" className="monEntry">Move List:</h3>);
+      
+      for (let i = 0; i < this.state.current.moves.length; i++) { // Moves
         this.indents.push(<li key={i + 1} className="monEntry"> {this.checkMoves("Moves", this.state.current.moves.length, i)}</li>);
       }
     }
@@ -67,7 +76,7 @@ class Pokedex extends Component {
   checkData(path, dataLength) {
     this.fullString = '';
 
-    for (var i = 0; i < dataLength; i++) {
+    for (let i = 0; i < dataLength; i++) {
       this.sep = (i + 1 < dataLength) ? " / " : "";
       this.fullString += this.pickPath(path, this.state.current, i);
     }
@@ -100,6 +109,7 @@ class Pokedex extends Component {
         </div>
         <div className="columns monProfile">
           {this.createPokemonProfile()}
+          {this.createPokemonMoveSet()}
         </div>
       </div>
     );
