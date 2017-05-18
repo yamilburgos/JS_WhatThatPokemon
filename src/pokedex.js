@@ -27,7 +27,6 @@ class Pokedex extends Component {
 
     for (var i = 0; i < this.state.apiData.length; i++) {
       this.final = this.createNumber(i + 1) +  this.capitalize(this.state.apiData[i].name);
-
       this.indents.push(<p onClick={() => this.getPokemonEntry()} key={i + 1} className="monEntry">{this.final}</p>);
     }
 
@@ -42,7 +41,10 @@ class Pokedex extends Component {
       this.indents.push(<p key="b" className="monEntry">Weight: {this.state.current.weight}</p>);
       this.indents.push(<p key="c" className="monEntry">Type(s): {this.checkData("Type", this.state.current.types.length)}</p>);
       this.indents.push(<p key="d" className="monEntry">Abilities: {this.checkData("Ability", this.state.current.abilities.length)}</p>);
-      this.indents.push(<p key="e" className="monEntry">All Moves: {this.checkData("Moves", this.state.current.moves.length)}</p>);
+
+      for (var i = 0; i < this.state.current.moves.length; i++) { // Moves
+        this.indents.push(<li key={i + 1} className="monEntry"> {this.checkMoves("Moves", this.state.current.moves.length, i)}</li>);
+      }
     }
   
     return this.indents;
@@ -73,14 +75,19 @@ class Pokedex extends Component {
     return this.fullString;
   }
 
-  pickPath(chosenPathway, apiInfo, i) {
+  checkMoves(path, dataLength, i) {
+    this.fullString = this.sep = '';
+    return this.fullString += this.pickPath(path, this.state.current, i);
+  }
+
+  pickPath(chosenPathway, apiInfo, num) {
     switch(chosenPathway) {
         case "Type":
-          return this.capitalize(apiInfo.types[i].type.name) + this.sep;
+          return this.capitalize(apiInfo.types[num].type.name) + this.sep;
         case "Ability":
-          return this.capitalize(apiInfo.abilities[i].ability.name) + this.sep;
+          return this.capitalize(apiInfo.abilities[num].ability.name) + this.sep;
         default: // Moves
-          return this.capitalize(apiInfo.moves[i].move.name) + this.sep;
+          return this.capitalize(apiInfo.moves[num].move.name) + this.sep;
     }
   }
 
