@@ -44,17 +44,13 @@ class Pokedex extends Component {
   }
 
   createPokemonMoveSet() {
-    this.indents = [];
-
     if(this.state.current.id !== undefined) {
-      this.indents.push(<h3 key="e" className="monEntry">Move List:</h3>);
-      
-      for (let i = 0; i < this.state.current.moves.length; i++) { // Moves
-        this.indents.push(<li key={i + 1} className="monEntry"> {this.checkMoves("Moves", this.state.current.moves.length, i)}</li>);
-      }
+        this.indents.push(<h3 key="e" className="monEntry">Move List:</h3>);
+
+        return this.indents = this.state.current.moves.map((data, num) => {
+          return (<li key={num + 1} className="monEntry"> {this.checkMoves("Moves", this.state.current.moves.length, num)}</li>);
+        });
     }
-  
-    return this.indents;
   }
   
   createNumber(pokemonIndex) {
