@@ -49,7 +49,7 @@ class Pokedex extends Component {
     if(this.state.current.id !== undefined) {
       this.indents.push(<h3 key="a" className="monEntry focus">{this.createNumber(this.state.current.id) + this.state.current.name}</h3>);
       this.indents.push(<p key="b" className="monEntry">Weight: {this.state.current.weight / 10} kg</p>);
-      this.indents.push(<p key="c" className="monEntry">Type(s): {this.checkData("Type", this.state.current.types.length)}</p>);
+      this.indents.push(<p key="c" className="monEntry">Type: {this.checkData("Type", this.state.current.types.length)}</p>);
       this.indents.push(<p key="d" className="monEntry">Abilities: {this.checkData("Ability", this.state.current.abilities.length)}</p>);
     }
   
