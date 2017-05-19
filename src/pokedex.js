@@ -5,7 +5,7 @@ import axios from 'axios';
 class Pokedex extends Component {
   constructor(props) {
     super(props);
-    this.state = { apiData: [], current: [] };
+    this.state = { apiData: [], current: [], loading: false };
   }
 
   componentDidMount() {
@@ -15,9 +15,11 @@ class Pokedex extends Component {
   }
 
   getPokemonEntry(num) {
-    axios.get(this.state.apiData[num].url).then((allData) => {        
-        this.setState({ current: allData.data });
-    });
+      if(this.canClickAgain()) {
+          axios.get(this.state.apiData[num].url).then((allData) => {
+            this.setState({ current: allData.data, loading: false });
+          });
+      }
   }
 
   makePokemonList() {
@@ -92,6 +94,14 @@ class Pokedex extends Component {
   checkMoves(path, dataLength, i) {
     this.fullString = this.sep = '';
     return this.fullString += this.pickPath(path, this.state.current, i);
+  }
+
+  canClickAgain() {
+    if(this.state.loading === false) {
+        this.setState({ loading: true });
+    }
+
+    return (this.state.loading === false) ? true : false;     
   }
 
   pickPath(chosenPathway, apiInfo, num) {
