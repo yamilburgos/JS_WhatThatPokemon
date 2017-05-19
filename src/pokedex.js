@@ -24,7 +24,7 @@ class Pokedex extends Component {
 
   makePokemonList() {
     this.indents = this.state.apiData.map((data, num) => {
-        return this.createNumber(num + 1) + this.capitalize(data.name);
+        return this.createNumber(num + 1) + data.name;
     });
 
     return this.results = this.indents.map((data, num) => {
@@ -47,7 +47,7 @@ class Pokedex extends Component {
     this.indents = [];
 
     if(this.state.current.id !== undefined) {
-      this.indents.push(<h3 key="a" className="monEntry focus">{this.createNumber(this.state.current.id) + this.capitalize(this.state.current.name)}</h3>);
+      this.indents.push(<h3 key="a" className="monEntry focus">{this.createNumber(this.state.current.id) + this.state.current.name}</h3>);
       this.indents.push(<p key="b" className="monEntry">Weight: {this.state.current.weight / 10} kg</p>);
       this.indents.push(<p key="c" className="monEntry">Type(s): {this.checkData("Type", this.state.current.types.length)}</p>);
       this.indents.push(<p key="d" className="monEntry">Abilities: {this.checkData("Ability", this.state.current.abilities.length)}</p>);
@@ -74,10 +74,6 @@ class Pokedex extends Component {
     }
 
     return this.fullString += ". ";
-  }
-
-  capitalize(thisName) {
-    return thisName.charAt(0).toUpperCase() + thisName.slice(1);
   }
 
   checkData(path, dataLength) {
@@ -107,11 +103,11 @@ class Pokedex extends Component {
   pickPath(chosenPathway, apiInfo, num) {
     switch(chosenPathway) {
         case "Type":
-          return this.capitalize(apiInfo.types[num].type.name) + this.sep;
+          return apiInfo.types[num].type.name + this.sep;
         case "Ability":
-          return this.capitalize(apiInfo.abilities[num].ability.name) + this.sep;
+          return apiInfo.abilities[num].ability.name + this.sep;
         default: // Moves
-          return this.capitalize(apiInfo.moves[num].move.name) + this.sep;
+          return apiInfo.moves[num].move.name + this.sep;
     }
   }
 
