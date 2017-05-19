@@ -79,8 +79,8 @@ class Pokedex extends Component {
   checkData(path, dataLength) {
     this.fullString = '';
 
-    for (let i = 0; i < dataLength; i++) {
-      this.sep = (i + 1 < dataLength) ? " / " : "";
+    for (let i = dataLength - 1; i >= 0; i--) {
+      this.sep = (i > 0) ? " / " : "";
       this.fullString += this.pickPath(path, this.state.current, i);
     }
 
