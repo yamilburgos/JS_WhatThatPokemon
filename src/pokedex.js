@@ -9,7 +9,7 @@ class Pokedex extends Component {
   }
 
   componentDidMount() {
-    axios.get("http://pokeapi.co/api/v2/pokemon/?limit=151").then((allData) => {
+    axios.get("https://pokeapi.co/api/v2/pokemon/?limit=151").then((allData) => {
         this.setState({ apiData: allData.data.results });
      });
   }
